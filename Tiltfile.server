@@ -1,0 +1,15 @@
+# -*- mode: Python -*-
+
+server_yaml_path = './docker-compose/server.yaml'
+watch_file(server_yaml_path)
+dc_resource('server', labels=['transcoderd'])
+
+docker_build(
+  'local.dev/transcoderd',
+  '.',
+  dockerfile='./server/Dockerfile',
+  ignore=[
+    'worker'
+  ],
+  build_args={}
+)

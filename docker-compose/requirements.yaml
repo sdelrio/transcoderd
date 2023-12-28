@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16
+#    ports:
+#      - 5432:5432  # Direct acess
+#    volumes:
+#      - './app/postgres:/var/lib/postgresql/data'  # Persistant storage
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpass
+      POSTGRES_DB: orchestator
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  pgadmin:
+    image: dpage/pgadmin4:8.1
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin  # Persistant storage
+    ports:
+      - 5050:80
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+#      - 5672:5672  # API
+      - 15672:15672  # UI
+#    volumes:
+#      - './app/rabbitmq/data:/var/lib/rabbitmq'  # Persistant storage
+#      - './app/rabbitmq/log:/var/lib/log'   # Perrsistant log
+    environment:
+      - "RABBITMQ_DEFAULT_USER=broker"
+      - "RABBITMQ_DEFAULT_PASS=broker"
+#      - "RABBITMQ_DEFAULT_VHOST='vhost'"
+    healthcheck:
+      test: rabbitmq-diagnostics is_running | grep -q 'fully booted'
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  pgadmin:

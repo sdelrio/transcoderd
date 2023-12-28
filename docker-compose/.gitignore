@@ -1,0 +1,5 @@
+app/**
+pgadmin/**
+source/**
+target/**
+tmp/**

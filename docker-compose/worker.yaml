@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+# transcoderd worker
+  worker:
+    hostname: worker-1
+    depends_on: [ postgres, rabbitmq, server ]
+    image: local.dev/encoder-agent
+    command:
+      - --broker.host
+      - rabbitmq
+      - --worker.priority
+      - '9'
+#    user: "${UID}:${GID}"
+    volumes:
+    - ./config.yaml:/etc/transcoderd/config.yaml
+    - ./tmp:/tmp/
+    environment:
+      user: brokeruser
+      password: brokerpass
+#      UID: ${UID}
+#      GID: ${GID}

@@ -1,0 +1,33 @@
+# -*- mode: Python -*-
+
+local_resource(
+  name="download source",
+  cmd="mkdir -p docker-compose/source && wget -O docker-compose/source/test-video.mkv https://getsamplefiles.com/download/mkv/sample-2.mkv",
+  trigger_mode=TRIGGER_MODE_MANUAL,
+  labels=['scripts'],
+  auto_init=False
+)
+
+local_resource(
+  name="add mkv to queue",
+  cmd="curl -s -m 2 --connect-timeout 1 --location --request POST http://localhost:8080/api/v1/job/?token=encodingtoken --header 'Content-Type: text/plain' --data '{ \"SourcePath\": \"test-video.mkv\" }'",
+  trigger_mode=TRIGGER_MODE_MANUAL,
+  labels=['scripts'],
+  auto_init=False
+)
+
+local_resource(
+  name="ls source",
+  cmd="ls -lh docker-compose/source/*mkv",
+  trigger_mode=TRIGGER_MODE_MANUAL,
+  labels=['scripts'],
+  auto_init=False
+)
+
+local_resource(
+  name="rm target",
+  cmd="mkdir -p docker-compose/target && rm -f docker-compose/target/*mkv && ls -l docker-compose/target",
+  trigger_mode=TRIGGER_MODE_MANUAL,
+  labels=['scripts'],
+  auto_init=False
+)

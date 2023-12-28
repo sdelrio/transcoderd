@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+# transcoderd server
+  server:
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    image: local.dev/transcoderd
+    ports:
+      - 8080:8080
+    volumes:
+    - ./config.yaml:/etc/transcoderd/config.yaml
+    - ./source:/source
+    - ./target:/target
+#    user: "1000:1000"
+    #user: "${UID}:${GID}"
+#    environment:
+#      user: broker
+#      password: broker
+#      UID: "1000"
+#      GID: "1000"
+#      UID: "${UID}"
+#      GID: "${GID}"

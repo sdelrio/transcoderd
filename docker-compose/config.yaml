@@ -1,0 +1,26 @@
+database:
+  host: postgres
+  user: dbuser
+  password: dbpass
+  scheme: orchestator
+
+web:
+  token: encodingtoken
+
+broker:
+  host: rabbitmq
+  user: broker
+  password: broker
+  taskEncodeQueue: tasks
+  taskPGSQueue: tasks_pgstosrt
+  eventQueue: task_events
+
+scheduler:
+  downloadPath: /source
+  uploadPath: /target
+  domain: http://server:8080
+  minFileSize: 10000000
+
+worker:
+  user: broker
+  password: broker

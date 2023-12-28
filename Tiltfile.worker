@@ -1,0 +1,15 @@
+# -*- mode: Python -*-
+
+server_yaml_path = './docker-compose/worker.yaml'
+watch_file(server_yaml_path)
+dc_resource('worker', labels=['transcoderd'])
+
+docker_build(
+  'local.dev/encoder-agent',
+  '.',
+  dockerfile='./worker/Dockerfile.encode',
+  ignore=[
+    'server'
+  ],
+  build_args={}
+)
