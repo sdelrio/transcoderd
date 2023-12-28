@@ -1,0 +1,11 @@
+.git/*
+Makefile
+Tiltfile*
+docker-compose/*
+.idea
+assets_*
+statik/
+/build/
+/dist/
+/gui/
+*.sh
