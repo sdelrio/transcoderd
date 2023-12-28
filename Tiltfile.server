@@ -8,6 +8,7 @@ docker_build(
   'local.dev/transcoderd',
   '.',
   dockerfile='./server/Dockerfile',
+  target='debug',
   ignore=[
     'worker'
   ],

@@ -9,3 +9,6 @@ statik/
 /dist/
 /gui/
 *.sh
+server/Dockerfile
+worker/Dockerfile.encode
+worker/Dockerfile.pgs
